@@ -1,0 +1,63 @@
+app:
+  message: "Production environment message — стабильная версия"
+  debug-mode: false
+
+spring:
+  datasource:
+    url: "jdbc:postgresql://prod-db.company.com:5432/prod_db"
+    username: "${DB_USERNAME}"  
+    password: "${DB_PASSWORD}"
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 20
+      minimum-idle: 5
+  jpa:
+    hibernate:
+      ddl-auto: "validate"
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: "org.hibernate.dialect.PostgreSQLDialect"
+        default_schema: "public"
+
+server:
+  port: 80
+  compression:
+    enabled: true
+    mime-types: "text/html,text/css,application/json"
+  error:
+    include-stacktrace: "never"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,metrics"
+  endpoint:
+    health:
+      show-details: "when_authorized"
+    metrics:
+      export:
+        prometheus:
+          enabled: true
+
+security:
+  cors:
+    allowed-origins: "https://app.company.com"
+    allowed-methods: "GET,POST"
+  headers:
+    content-security-policy: "default-src 'self'"
+
+custom:
+  feature-toggle: false  
+  cache-ttl-seconds: 3600 
+  max-retries: 2
+
+logging:
+  level:
+    root: WARN
+    com.example: INFO
+  logback:
+    rollingpolicy:
+      max-file-size: "10MB"
+      max-history: 30
