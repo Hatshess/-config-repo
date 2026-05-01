@@ -1,0 +1,4 @@
+app:
+  message: "Default message from config server"
+server:
+  port: 8080
